@@ -11,8 +11,8 @@ public interface EmployeeMapper {
     /**
      * 根据用户名查询员工
      *
-     * @param username
-     * @return
+     * @param username 用户名
+     * @return 员工实体对象
      */
     @Select("select * from employee where username = #{username}")
     Employee getByUsername(String username);
@@ -20,7 +20,7 @@ public interface EmployeeMapper {
     /**
      * 插入员工数据
      *
-     * @param employee
+     * @param employee 员工表
      */
     @Insert("Insert into employee(name, username, password, phone, sex, id_number, status, create_time, update_time, create_user, update_user) " +
             "VALUES " +
