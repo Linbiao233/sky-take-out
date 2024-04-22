@@ -5,6 +5,9 @@ import com.sky.dto.CategoryPageQueryDTO;
 import com.sky.entity.Category;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Select;
+
+import java.util.List;
 
 @Mapper
 public interface CategoryMapper {
@@ -20,8 +23,24 @@ public interface CategoryMapper {
 
     /**
      * 套餐分页查询
+     *
      * @param categoryPageQueryDTO
      * @return
      */
     Page<Category> pageQuery(CategoryPageQueryDTO categoryPageQueryDTO);
+
+    /**
+     * 启用禁用分类(修改分类)
+     *
+     * @param category
+     */
+    void update(Category category);
+
+    /**
+     * 根据类型查询分类
+     *
+     * @param type
+     * @return
+     */
+    List<Category> list(Integer type);
 }

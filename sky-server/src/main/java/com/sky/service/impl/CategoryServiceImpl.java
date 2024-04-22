@@ -56,11 +56,53 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public PageResult page(CategoryPageQueryDTO categoryPageQueryDTO) {
-        PageHelper.startPage(categoryPageQueryDTO.getPage(),categoryPageQueryDTO.getPageSize());
-        Page<Category> page =categoryMapper.pageQuery(categoryPageQueryDTO);
+        PageHelper.startPage(categoryPageQueryDTO.getPage(), categoryPageQueryDTO.getPageSize());
+        Page<Category> page = categoryMapper.pageQuery(categoryPageQueryDTO);
         //通过page拿到total和result
         long total = page.getTotal();
         List<Category> result = page.getResult();
-        return new PageResult(total,result);
+        return new PageResult(total, result);
+    }
+
+    /**
+     * 启用禁用分类
+     *
+     * @param status
+     * @param id
+     */
+    @Override
+    public void startOrStop(Integer status, Long id) {
+        Category category = Category.builder()
+                .status(status)
+                .id(id)
+                .updateTime(LocalDateTime.now())
+                .updateUser(BaseContext.getCurrentId())
+                .build();
+        categoryMapper.update(category);
+    }
+
+    /**
+     * 修改分类
+     *
+     * @param categoryDTO
+     */
+    @Override
+    public void updateCategory(CategoryDTO categoryDTO) {
+        Category category = new Category();
+        BeanUtils.copyProperties(categoryDTO, category);
+        category.setUpdateTime(LocalDateTime.now());
+        category.setUpdateUser(BaseContext.getCurrentId());
+        categoryMapper.update(category);
+    }
+
+    /**
+     * 根据类型查询分类
+     *
+     * @param type
+     * @return
+     */
+    @Override
+    public List<Category> list(Integer type) {
+       return categoryMapper.list(type);
     }
 }
