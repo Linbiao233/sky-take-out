@@ -71,5 +71,15 @@ public class CategoryController {
         List<Category> list = categoryService.list(type);
         return Result.success(list);
     }
+    /**
+     * 根据id删除分类
+     */
+    @DeleteMapping
+    public Result<String> delete(Long id){
+        log.info("根据id删除分类：{}",id);
+        categoryService.delete(id);
+        return Result.success();
+    }
+
 
 }
