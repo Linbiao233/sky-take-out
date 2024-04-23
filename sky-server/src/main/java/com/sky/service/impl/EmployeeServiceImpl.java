@@ -9,9 +9,11 @@ import com.sky.context.BaseContext;
 import com.sky.dto.EmployeeDTO;
 import com.sky.dto.EmployeeLoginDTO;
 import com.sky.dto.EmployeePageQueryDTO;
+import com.sky.dto.PasswordEditDTO;
 import com.sky.entity.Employee;
 import com.sky.exception.AccountLockedException;
 import com.sky.exception.AccountNotFoundException;
+import com.sky.exception.BaseException;
 import com.sky.exception.PasswordErrorException;
 import com.sky.mapper.EmployeeMapper;
 import com.sky.result.PageResult;
@@ -125,14 +127,36 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     /**
      * 根据id查询员工信息
+     *
      * @param id
      * @return
      */
     @Override
     public Employee getById(Long id) {
-       Employee employee = employeeMapper.getById(id);
+        Employee employee = employeeMapper.getById(id);
         employee.setPassword("****");
         return employee;
+    }
+
+    /**
+     * 修改当前用户密码
+     *
+     * @param passwordEditDTO
+     */
+    //TODO 暂时先空着，空了来写
+    @Override
+    public void updatePassword(PasswordEditDTO passwordEditDTO) {
+        //将传过来的empId=null（这里还差当前用户id）, oldPassword=123456, newPassword=123456
+        //通过线程获取当前用户的id
+        passwordEditDTO.setEmpId(BaseContext.getCurrentId());
+        //判断用户密码是否为空
+        if (passwordEditDTO.getNewPassword()==null){
+            throw new PasswordErrorException(MessageConstant.PASSWORD_ERROR_NULL);
+        }
+        if (passwordEditDTO.getNewPassword().equals(passwordEditDTO.getOldPassword())){
+            throw new PasswordErrorException(MessageConstant.PASSWORD_EDIT_FAILED);
+        }
+//        employeeMapper.updatePassword(passwordEditDTO.getNewPassword());
     }
 
 
